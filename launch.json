@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "NutricodeApplication",
+            "request": "launch",
+            "mainClass": "com.tg.nutricode.NutricodeApplication",
+            "env": {
+                "DATABASE_URL": "jdbc:postgresql://localhost:5432/nutricode",
+                "DATABASE_USERNAME": "myuser",
+                "DATABASE_PASSWORD": "secret",
+                "JWT_SECRET": "NUTRICODE-J-K-L-M-R",
+                "APP_BASE_URL": "http://localhost:8080"
+            }
+        }
+    ]
+}

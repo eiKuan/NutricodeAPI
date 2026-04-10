@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: nutricode-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: nutricode
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d nutricode"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Interface do DbGate para testar localmente de uma forma mais visual em produção
+  dbgate:
+    image: dbgate/dbgate:latest
+    container_name: nutricode-dbgate
+    restart: always
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
