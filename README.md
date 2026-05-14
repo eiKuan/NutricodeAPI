@@ -56,7 +56,7 @@ docker-compose up -d
 
 ### Pré-requisitos
 
-* Java 17+
+* Java 25
 * Maven
 
 ### Passos
