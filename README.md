@@ -103,6 +103,11 @@ src/main/resources/
 
 ---
 
+## 📄 Documentação dos Endpoints
+O projeto API Nutricode utiliza Swagger para uma documentação simplificada dos endspoints.
+Após executar o código, visualizável em: http://localhost:8080/swagger-ui/index.html#/
+
+---
 ## 📄 Licença
 
 Projeto de uso acadêmico desenvolvido para o sistema Nutricode.
