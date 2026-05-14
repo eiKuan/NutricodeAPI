@@ -29,10 +29,10 @@ A aplicação integra fontes externas de dados para enriquecer o sistema, inclui
 * **TACO (Tabela Brasileira de Composição de Alimentos)**
   Fonte de dados nutricionais utilizada para informações de alimentos.
 
-### 🚨 Imports - dados
+### 🚨 Imports - Dados
 A nível de código, para utilizar os mesmos dados de alimentos e exercícios é necessário ativar os imports.
 * Em infra/dataloader contém a ativação do import dos exercícios
-* Em resouces/backup_alimentos.sql há o import dos alimentos em Sql
+* Em resources/backup_alimentos.sql há o import dos alimentos em Sql
 
 ---
 
