@@ -1,5 +1,6 @@
 package com.tg.nutricode.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -10,17 +11,29 @@ import jakarta.persistence.Table;
 public class Alimento {
 
     @Id
+    @Column(name = "id")
     private Integer id;
 
+    @Column(name = "name")
     private String name;
 
-    // Os nutrientes, calorias etc na taco sao por 100g*
-    private Double kcal;
-    private Double protein;
-    private Double carbohydrates;
-    private Double lipids;
-    private Double dietaryFiber;
 
+    // Os nutrientes, calorias etc na taco sao por 100g*
+    @Column(name = "kcal")
+    private Double kcal;
+
+    @Column(name = "protein")
+    private Double protein;
+
+    @Column(name = "carbohydrates")
+    private Double carbohydrates;
+
+    @Column(name = "lipids")
+    private Double lipids;
+
+    @Column(name = "dietary_fiber")
+    private Double dietaryFiber;
+    
     // // // // // // // // // // // // //
     // Getters e Setters
 

@@ -17,19 +17,33 @@ import jakarta.persistence.Table;
    entao para colocar no banco relacional teve que ser feito dessa forma (Collections).
  */
 @Entity
-@Table(name = "exercicios") 
+@Table(name = "exercises") 
 public class Exercicio {
 
     @Id
+    @Column(name = "id")
     private String id;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "force")
     private String force;
+
+    @Column(name = "level")
     private String level;
+
+    @Column(name = "mechanic")
     private String mechanic;
+
+    @Column(name = "equipment")
     private String equipment;
+
+    @Column(name = "category")
     private String category;
 
+    // relacoes para import (é um json com listas)
+    
     @ElementCollection // Indica que é uma lista simples (não é outra entidade)
     @CollectionTable(
         name = "exercise_primary_muscles", // Tabela separada

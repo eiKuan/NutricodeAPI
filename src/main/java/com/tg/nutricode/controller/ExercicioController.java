@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/exercicios")
 @SecurityRequirement(name = "bearerAuth")
 @Tag(
-    name = "Exercícios | ", 
+    name = "5 - Exercícios | ", 
     description = "Controlador que somente retorna dados dos exercícios cadastrados. Fonte: joao-gugel, Exercicios-Bd-PtBr. Paginaçao padrao para retorno mais rapido."
 )
 public class ExercicioController {

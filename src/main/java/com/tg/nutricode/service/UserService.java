@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tg.nutricode.dto.UpdateUserDto;
 import com.tg.nutricode.dto.UserResponseDto;
 import com.tg.nutricode.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
 public class UserService {
@@ -66,5 +67,23 @@ public class UserService {
             }
             userRepository.save(user);
         }
+    }
+
+    public UserResponseDto getAuthenticatedUser() {
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        
+        System.out.println("Email do token: " + email); // log temporário
+        
+        return userRepository.findByEmail(email)
+                .map(user -> new UserResponseDto(
+                    user.getUserId(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getCreationTimestamp(),
+                    user.getUpdateTimestamp()
+                ))
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

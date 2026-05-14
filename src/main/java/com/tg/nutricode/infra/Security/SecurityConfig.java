@@ -32,19 +32,27 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/forgot-password").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/reset-password").permitAll()
-            .requestMatchers(HttpMethod.GET, "/auth/confirm").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/forgot-password").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/reset-password").permitAll()
+                .requestMatchers(HttpMethod.GET, "/auth/confirm").permitAll()
                 .requestMatchers(
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/v3/api-docs/**",
                     "/v3/api-docs"
                 ).permitAll()
+                //  /users/me antes do {userId} para não conflitar
+                .requestMatchers("/users/me/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
+                // endpoints exclusivos do ADMIN
+                .requestMatchers(HttpMethod.GET, "/users/list").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/users/{userId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasRole("ADMIN")
+                // qualquer usuário autenticado acessa o resto
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

@@ -1,4 +1,4 @@
-/* PARA DAR IMPORT NOS DADOS DO EXERCICIOS DB
+/* PARA DAR IMPORT NOS DADOS DO EXERCICIOS DB*/
 package com.tg.nutricode.infra.dataLoader;
 
 //METODO UTILIZANDO URL DO GITHUB
@@ -13,12 +13,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tg.nutricode.entity.Exercicio;
+import com.tg.nutricode.model.Exercicio;
 import com.tg.nutricode.service.ExercicioService;
 
 @Configuration // Indica que essa classe contém configurações do Spring (beans)
 public class DataLoader {
     @Bean
+    @SuppressWarnings("unused")
     CommandLineRunner loadData(ExercicioService service) {
         return args -> {
 

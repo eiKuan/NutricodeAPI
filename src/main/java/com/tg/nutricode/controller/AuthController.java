@@ -3,17 +3,36 @@ package com.tg.nutricode.controller;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-import com.tg.nutricode.dto.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tg.nutricode.dto.ForgotPasswordRequestDto;
+import com.tg.nutricode.dto.ForgotPasswordResponseDto;
+import com.tg.nutricode.dto.LoginRequestDto;
+import com.tg.nutricode.dto.RefreshRequestDto;
+import com.tg.nutricode.dto.RegisterRequestDto;
+import com.tg.nutricode.dto.RegisterResponseDto;
+import com.tg.nutricode.dto.ResetPasswordRequestDto;
+import com.tg.nutricode.dto.ResponseDto;
 import com.tg.nutricode.model.User;
+import com.tg.nutricode.model.UserInfo;
+import com.tg.nutricode.model.UserProgressionProfile;
 import com.tg.nutricode.model.UserToken;
+import com.tg.nutricode.repository.UserInfoRepository;
+import com.tg.nutricode.repository.UserProgressionProfileRepository;
 import com.tg.nutricode.repository.UserRepository;
 import com.tg.nutricode.repository.UserTokenRepository;
 import com.tg.nutricode.service.ConfirmationTokenService;
 import com.tg.nutricode.service.TokenService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -21,7 +40,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 @Tag(
-    name = "Autenticação | ",
+    name = "0 - Autenticação | ",
     description = "Endpoints de autenticação. Login, registro, confirmação de email, refresh, logout e recuperação de senha."
 )
 public class AuthController {
@@ -36,6 +55,11 @@ public class AuthController {
     private TokenService tokenService;
     @Autowired
     private ConfirmationTokenService confirmationTokenService;
+    @Autowired
+    private UserProgressionProfileRepository userProgressionProfileRepository;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
 
     @Operation(
         summary = "Login",
@@ -111,6 +135,12 @@ public class AuthController {
         userToken.setRefreshToken(refreshToken);
         userTokenRepository.save(userToken);
 
+        //Cria perfil de progresso do usuario
+        UserProgressionProfile progressionProfile = new UserProgressionProfile(newUser);
+        userProgressionProfileRepository.save(progressionProfile);
+
+        UserInfo userInfo = new UserInfo(newUser);
+        userInfoRepository.save(userInfo);
         // retorna o token para o frontend enviar o email via EmailJS
         return ResponseEntity.ok(new RegisterResponseDto(
             newUser.getUsername(),

@@ -10,6 +10,6 @@ import com.tg.nutricode.model.Alimento;
 @Repository
 public interface AlimentoRepository extends JpaRepository<Alimento, Integer>{
 
-    //Retorna varios alimentos, ContainingIgnoreCase?
+    //Retorna varios alimentos
     List<Alimento> findByNameContainingIgnoreCase(String name);
 }

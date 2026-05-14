@@ -19,6 +19,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+// v2: Att roles (admin e user)
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
@@ -28,25 +29,31 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     UserRepository userRepository;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = this.recoverToken(request);
 
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        var token = this.recoverToken(request);
         var login = tokenService.validateToken(token);
 
-        if(login != null){
-            User user = userRepository.findByEmail(login).orElseThrow(
-                () -> new RuntimeException("User Not Found")
+        if (login != null) {
+            User user = userRepository.findByEmail(login)
+                    .orElseThrow(() -> new RuntimeException("User Not Found"));
+
+            var authorities = Collections.singletonList(
+                    new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
             );
 
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+            var authentication = new UsernamePasswordAuthenticationToken(
+                user.getEmail(),
+                null,
+                authorities
+            );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        
-        filterChain.doFilter(request, response);
+        } 
+
+        filterChain.doFilter(request, response); // ✅ fora do if
     }
     
     

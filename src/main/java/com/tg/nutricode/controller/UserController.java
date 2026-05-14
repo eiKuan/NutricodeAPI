@@ -1,11 +1,20 @@
 package com.tg.nutricode.controller;
 
 import java.util.List;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.tg.nutricode.dto.UpdateUserDto;
 import com.tg.nutricode.dto.UserResponseDto;
 import com.tg.nutricode.service.UserService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,7 +24,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 @SecurityRequirement(name = "bearerAuth")
 @Tag(
-    name = "Usuários | ",
+    name = "1 - Usuários | ",
     description = "Gerenciamento de usuários autenticados. Todos os endpoints requerem token JWT válido."
 )
 public class UserController {
@@ -72,5 +81,14 @@ public class UserController {
     public ResponseEntity<Void> deleteById(@PathVariable String userId) {
         userService.deleteById(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(
+        summary = "Buscar dados do usuário autenticado",
+        description = "Retorna os dados do usuário autenticado pelo token JWT."
+    )
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDto> getAuthenticatedUser() {
+        return ResponseEntity.ok(userService.getAuthenticatedUser());
     }
 }
